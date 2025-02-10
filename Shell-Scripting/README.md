@@ -22,4 +22,6 @@ This repository is organized by topic or concept, with each script residing in i
 
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/Amittripathy901/Amit-Tripathy-VMWare-Ubuntu-Machine.git](https://www.google.com/search?q=https://github.com/Amittripathy901/Amit-Tripathy-VMWare-Ubuntu-Machine.git)
+   git clone [https://github.com/Amittripathy901/Amit-Tripathy-VMWare-Ubuntu-Machine
+/Shell-Scripting/.git](https://www.google.com/search?q=https://github.com/Amittripathy901/Amit-Tripathy-VMWare-Ubuntu-Machine
+/Shell-Scripting/.git)
