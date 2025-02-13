@@ -22,6 +22,7 @@ if [ $? -eq 0 ]; then
         git push origin main  # Push staged files to the main branch
         if [ $? -eq 0 ]; then
             echo "Pushing Files Successful!"
+	    echo "Your Github Repo is Fully Updated for today : $(date +"%Y-%m-%d")"
             exit 0
         else
             echo "Pushing Failed. Try Again."
@@ -37,13 +38,4 @@ else
     echo "Can't add files"
     exit 1
 fi
-sleep 1
 
-if [ $? -eq 0 ];
-then
-	echo "Your Github Repo is Fully Updated for today : $(date +"%Y-%m-%d")"
-        exit 1
-else 
-	echo "Failed to Update Repository"
-	exit 1
-fi
