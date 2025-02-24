@@ -1,0 +1,223 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #dfe4e8); /* Soft gradient background */
+    color: #333; /* Dark gray text for readability */
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333; /* Dark text color for headings */
+}
+
+a {
+    color: #4B8B3B; /* Classy green color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #F0C808; /* Subtle yellow when hovering */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    background-color: #2B3E50; /* Classy dark blue background */
+    padding: 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+    background-color: #3D5665; /* Darker blue for hover */
+    border-radius: 5px;
+}
+
+.hero {
+    background: linear-gradient(45deg, #2B3E50, #4B8B3B); /* Elegant gradient */
+    padding: 100px 0;
+    text-align: center;
+    color: #fff;
+}
+
+.hero h1 {
+    font-size: 3rem;
+}
+
+.hero span {
+    color: #F0C808; /* Golden accent for name */
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
+
+.hero .btn {
+    background-color: #4B8B3B; /* Elegant green button */
+    padding: 15px 30px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+
+.hero .btn:hover {
+    background-color: #3D5665; /* Darker green for hover */
+}
+
+.section {
+    padding: 50px 0;
+    background-color: #fff; /* White background for sections */
+    margin: 30px 0;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.skills-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.skill-card {
+    background-color: #F0F0F0; /* Soft gray for skill cards */
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    width: 200px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.skill-card:hover {
+    transform: scale(1.05);
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.project-card {
+    background-color: #F8F8F8; /* Light gray for project cards */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-card h3 {
+    margin-bottom: 10px;
+    color: #4B8B3B; /* Classy green for project titles */
+}
+
+.project-card p {
+    color: #666; /* Slightly lighter gray text */
+}
+
+/* Social Links Section */
+#connect {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #fff;
+    margin: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4B8B3B; /* Green Button */
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #3D5665; /* Darker Green */
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input, form textarea {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #F9F9F9; /* Light background for form fields */
+    color: #333;
+    font-size: 1rem;
+}
+
+form button {
+    background-color: #4B8B3B; /* Elegant green button */
+    padding: 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #3D5665; /* Darker green for hover */
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #2B3E50; /* Matching dark blue background */
+    color: #fff;
+}
