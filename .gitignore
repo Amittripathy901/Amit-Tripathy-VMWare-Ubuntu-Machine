@@ -6,3 +6,4 @@ terraform.tfstate*
 *.zip
 *.backup
 ../My-Portfolio-Website/
+My-Portfolio-Website/
