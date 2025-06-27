@@ -1,0 +1,13 @@
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container text-center mt-5">
+    <h1 class="display-4">Welcome to Amit Tripathy's Learning Hubk</h1>
+    <p class="lead">Your hub for DevOps knowledge and resources.</p>
+    <hr class="my-4">
+    <p>Explore our courses and resources designed to enhance your DevOps skills.</p>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Product")" role="button">Go to Product List</a>
+</div>
+
