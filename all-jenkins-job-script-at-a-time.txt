@@ -1,0 +1,32 @@
+#The Bulk/Automated Way (Jenkins Script Console) : Go to Manage Jenkins --> Script Console --> Add the groovy script mentioned below:
+
+import org.jenkinsci.plugins.workflow.job.WorkflowJob
+
+Jenkins.instance.getAllItems(WorkflowJob.class).each { job ->
+    println "=========================================================================="
+    println "Job Name: ${job.name}"
+
+    def definition = job.getDefinition()
+
+    if (definition instanceof org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition) {
+        // Pipeline script from SCM
+        def scm = definition.scm
+        if (scm instanceof hudson.plugins.git.GitSCM) {
+            def gitScm = scm as hudson.plugins.git.GitSCM
+            println "Type: Pipeline script from SCM (Git)"
+            println "Repository: ${gitScm.getUserRemoteConfigs()[0].getUrl()}"
+            println "Branch: ${gitScm.getBranches()[0].getName()}"
+            println "Script Path: ${definition.scriptPath}"
+        } else {
+            println "Type: Pipeline script from SCM (other VCS)"
+            println "Details: ${definition.getScm()}"
+        }
+    } else if (definition instanceof org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition) {
+        // Pipeline script directly in the job
+        def script = definition.getScript()
+        println "Type: Pipeline script in Jenkins UI"
+        println "Script:\n${script}"
+    } else {
+        println "Type: Unknown"
+    }
+}

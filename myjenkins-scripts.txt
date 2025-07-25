@@ -1,0 +1,337 @@
+==========================================================================
+Job Name: develop
+Type: Unknown
+==========================================================================
+Job Name: feature
+Type: Unknown
+==========================================================================
+Job Name: main
+Type: Unknown
+==========================================================================
+Job Name: Boardgame-Pipeline
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+
+tools {
+maven 'maven3'
+}
+stages {
+stage('Git Checkout') {
+steps {
+git branch: 'main', url: 'https://github.com/Amittripathy901/Boardgame.git'
+}
+}
+stage('Compile') {
+steps {
+sh 'mvn compile'
+}
+}
+stage('Test') {
+steps {
+sh 'mvn test'
+}
+}
+stage('Build') {
+steps {
+sh 'mvn package'
+}
+}
+}
+}
+
+==========================================================================
+Job Name: Deploy-Tomcat
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+
+stages {
+stage('Git Checkout') {
+steps {
+git branch: 'main', url: 'https://github.com/jaiswaladi2468/TC.git'
+}
+}
+stage('Start Build') {
+steps {
+echo 'Building...'
+}
+}
+stage('Compile') {
+steps {
+sh "mvn compile"
+}
+}
+stage('Test') {
+steps {
+sh "mvn test"
+}
+}
+stage('Build') {
+steps {
+sh "mvn clean package"
+}
+}
+stage('Deploy') {
+steps {
+deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat-credential', path: '', url: 'http://192.168.31.181:8080')], contextPath: 'Planview', onFailure: false, war: 'target/*.war'
+}
+}
+
+}
+}
+
+==========================================================================
+Job Name: DevSecOps-Pipeline-Script
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+tools {
+jdk 'jdk-17'
+maven 'maven3'
+}
+environment {
+SCANNER_HOME = tool 'sonar-scanner'
+// Set the Trivy output report filename
+TRIVY_REPORT_FILENAME = 'trivy-report.json'
+
+// Set the OWASP output report filename
+OWASP_REPORT_FILENAME = 'dependency-check-report.xml'
+}
+
+stages {
+stage('git-checkout') {
+steps {
+git branch: 'main', url: 'https://github.com/Amittripathy901/Boardgame.git'
+}
+}
+
+stage('Code-Compile') {
+steps {
+sh "mvn compile"
+}
+}
+
+stage('Unit-Test') {
+steps {
+sh "mvn test"
+}
+}
+
+stage('Sonar Analysis') {
+steps {
+withSonarQubeEnv('sonar-server') {
+sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Boardgame \
+-Dsonar.java.binaries=. \
+-Dsonar.projectKey=Boardgame '''
+}
+}
+}
+stage('OWASP Dependency Check') {
+steps {
+dependencyCheck additionalArguments: ' --scan . ', odcInstallation: 'DC'
+dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+}
+}
+stage('Trivy File System Scan') {
+steps {
+echo 'Running Trivy filesystem scan for vulnerabilities, secrets, and misconfigurations...'
+sh "trivy fs --format json --output ${TRIVY_REPORT_FILENAME} --scanners vuln,config,secret --severity HIGH,CRITICAL ."
+}
+}
+stage('Code-Build') {
+steps {
+sh "mvn clean package"
+}
+}
+
+}
+}
+
+
+
+
+==========================================================================
+Job Name: git-parameter
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+
+tools {
+jdk 'jdk-17'
+maven 'maven3'
+}
+
+parameters {
+choice (name: 'Bchoice', choices: ['main', 'develop', 'feature'], description: 'branch-choices')
+}
+
+
+stages {
+
+stage('Git Checkout') {
+steps {
+git branch: "${params.Bchoice}", url: 'https://github.com/Amittripathy901/Boardgame.git'
+}
+}
+
+stage('Build') {
+steps {
+sh 'mvn package'
+}
+}
+
+
+}
+}
+
+==========================================================================
+Job Name: Shared-library
+Type: Pipeline script in Jenkins UI
+Script:
+@Library ('jenkins-lib')_
+pipeline {
+agent any
+tools {
+jdk 'jdk-17'
+maven 'maven3'
+}
+stages {
+stage('Git Checkout'){
+steps {
+git branch: 'main', url: 'https://github.com/Amittripathy901/secret-santa-generator.git'
+}
+}
+stage('Build') {
+steps {
+script {
+myFunction('Amit')
+pkgwithskiptst()
+}
+}
+}
+
+
+
+
+
+}
+}
+
+==========================================================================
+Job Name: Single-Branch-Build Trigger
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+tools {
+maven 'maven3'
+}
+stages {
+stage('Git Checkout') {
+steps {
+git branch: 'feature', url: 'https://github.com/Amittripathy901/Boardgame.git'
+}
+}
+stage('Compile') {
+steps {
+sh 'mvn compile'
+}
+}
+stage('Test') {
+steps {
+sh 'mvn test'
+}
+}
+stage('Build') {
+steps {
+sh 'mvn package'
+}
+}
+}
+
+
+
+post {
+always {
+script {
+def jobName = env.JOB_NAME
+def buildNumber = env.BUILD_NUMBER
+def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+def bannerColor = pipelineStatus.toUpperCase() == 'SUCCESS' ? 'green' : 'red'
+
+def body = """
+<html>
+<body>
+<div style="border: 4px solid ${bannerColor}; padding: 10px;">
+<h2>${jobName} - Build #${buildNumber}</h2>
+<div style="background-color: ${bannerColor}; padding: 10px;">
+<h3 style="color: white;">Pipeline Status: ${pipelineStatus.toUpperCase()}</h3>
+</div>
+<p>Check the <a href="${BUILD_URL}">console output</a>.</p>
+</div>
+</body>
+</html>
+"""
+
+emailext (
+subject: "${jobName} - Build #${buildNumber} ${pipelineStatus.toUpperCase()}",
+body: body,
+to: "amit.pravuji@gmail.com",
+from: "amittripathy.work@gmail.com",
+replyTo: "amittripathy.work@gmail.com",
+mimeType: 'text/html',
+)
+}
+}
+}
+
+}
+
+==========================================================================
+Job Name: Sonar-pipleine
+Type: Pipeline script in Jenkins UI
+Script:
+pipeline {
+agent any
+
+tools {
+maven'maven3'
+}
+environment {
+SCANNER_HOME= tool 'sonar-scanner'
+}
+stages {
+stage('Git Checkout') {
+steps {
+git branch: 'main', url: 'https://github.com/Amittripathy901/Boardgame.git'
+}
+}
+stage('Test the code') {
+steps {
+sh 'mvn test'
+}
+}
+stage('Escalating Sonar Analysis') {
+steps {
+withSonarQubeEnv('sonar-server') {
+sh '''$SCANNER_HOME/bin/sonar-scanner \
+-Dsonar.projectName=Boardgame \
+-Dsonar.branch.name=main \
+-Dsonar.projectKey=Boardgame \
+-Dsonar.java.binaries=target'''
+}
+}
+}
+
+stage('Build the Code') {
+steps {
+sh 'mvn package'
+}
+}
+}
+}
